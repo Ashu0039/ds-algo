@@ -99,6 +99,82 @@
       border-radius: 3px;
     }
   </style>
+  <script>
+    const Stack = (capacity) => {
+      arr = [];
+      const OVERFLOW = capacity;
+
+      return {
+        get length() { return arr.length },
+        pop: function() {
+          if (arr.length > 0) {
+            const lastElement = arr[stack.length - 1];
+            arr = [...arr.slice(0, arr.length - 1)]
+            return lastElement;
+          } else {
+            throw new Error('Stack is empty');
+          }
+        },
+        push: function(element) {
+          // can we add one more element
+          if (arr.length < OVERFLOW - 1) {
+            arr = [...arr, element];
+            return true;
+          } else {
+            throw new Error('Stack overflow')
+          }
+        },
+        empty: function() {
+          arr = [];
+          return true;
+        }
+      }
+    }
+
+    const STACK_CAPACITY = 10;
+
+    const Element = (title) => {
+      return { title };
+    }
+
+    function handleError(error) {
+      console.error('Got error --> ', error);
+      alert(error);
+    }
+
+    const stack = Stack(STACK_CAPACITY)
+    console.log('created a new stack --> ', stack.length);
+
+    function pushElementToStack() {
+      const currentLengthOfStack = stack.length;
+      console.log('current length of stack --> ', currentLengthOfStack);
+      // Just pushing numbers into stack
+      const newElement = Element(`${currentLengthOfStack + 1}`);
+      try {
+        stack.push(newElement);
+        console.log('pushed new element into stack --> ', stack.length);
+      } catch(error) {
+        handleError(error);
+      }
+    }
+
+    function popElementFromStack() {
+      try {
+        const elementPopped = stack.pop();
+        console.log('element popped --> ', elementPopped);
+      } catch (error) {
+        handleError(error);
+      }
+    }
+
+    function emptyStack() {
+      try {
+        stack.empty();
+      } catch (error) {
+        handleError(error);
+      }
+    }
+  </script>
 </head>
 <body>
   <div class="container">
@@ -118,9 +194,9 @@
           <p>Length of stack: <span class="length">4</span></p>
         </div>
         <div class="operations button-group">
-          <button>Push</button>
-          <button>Pop</button>
-          <button>Empty</button>
+          <button onclick="pushElementToStack()">Push</button>
+          <button onclick="popElementFromStack()">Pop</button>
+          <button onclick="emptyStack()">Empty</button>
         </div>
       </div>
     </section>
