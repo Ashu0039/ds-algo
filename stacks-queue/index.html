@@ -36,6 +36,7 @@
                             "animation info";
       grid-template-columns: 1fr 1fr;
       grid-template-rows: 40px auto;
+      padding: 0 10px;
     }
     section:last-child {
       border: none;
@@ -101,6 +102,12 @@
       color: var(--textOnPrimary);
       line-height: 30px;
       font-size: 20px;
+      transition: transform 0.5s ease-in-out;
+      transform: translateY(0);
+    }
+
+    .stack.out {
+      transform: translateY(-1000px);
     }
   </style>
   <script>
@@ -191,9 +198,13 @@
     function addNewElementToStack(element) {
       const stackElement = getStackBoxElement();
       const newStackElement = document.createElement('div');
-      newStackElement.classList = "stack";
+      newStackElement.classList = "stack out";
       newStackElement.innerText = element.title;
       stackElement.appendChild(newStackElement);
+
+      setTimeout(function () {
+        newStackElement.classList = "stack";
+      });
     }
 
     function popElementFromStack() {
@@ -211,7 +222,11 @@
       const stackElement = getStackBoxElement();
       const lastStackElement = stackElement.lastChild;
       if (lastStackElement) {
-        stackElement.removeChild(lastStackElement);
+        lastStackElement.classList = "stack out";
+        // should match with the animation duration specified in CSS
+        setTimeout(function () {
+          stackElement.removeChild(lastStackElement);
+        }, animationTime);
       }
     }
 
@@ -227,11 +242,20 @@
 
     function emptyStackElements() {
       const stackElement = getStackBoxElement();
-      while (stackElement.lastChild) {
-        stackElement.removeChild(stackElement.lastChild);
+      const allStacks = stackElement.children;
+      // Animate out all stacks
+      for(let i=0; i < allStacks.length; i++) {
+        const stackElement = allStacks[i];
+        stackElement.classList = 'stack out';
       }
-    }
 
+      // Remove all stacks from DOM after they have animated out
+      setTimeout(function () {
+        while (stackElement.lastChild) {
+          stackElement.removeChild(stackElement.lastChild);
+        }
+      }, animationTime)
+    }
 
     function init() {
       setStackCapacityCount(STACK_CAPACITY);
@@ -241,6 +265,9 @@
     const STACK_CAPACITY = 10;
 
     const stack = Stack(STACK_CAPACITY);
+
+    // should match with the animation duration specified in CSS
+    const animationTime = 500;
 
   </script>
 </head>
