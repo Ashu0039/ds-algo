@@ -83,13 +83,16 @@
 
     .box {
       border: 1px solid;
-      border-top: none;
       width: calc(100% - 2px);
       height: 75%;
       margin-top: auto;
       display: flex;
       flex-direction: column-reverse;
       align-items: center;
+    }
+
+    .stacks .box {
+      border-top: none;
     }
 
     .stack {
@@ -108,6 +111,11 @@
 
     .stack.out {
       transform: translateY(-1000px);
+    }
+
+    .queues .box {
+      border-top: none;
+      border-bottom: none;
     }
   </style>
   <script>
@@ -291,8 +299,22 @@
         </div>
       </div>
     </section>
-    <section class="queues ">
-
+    <section class="queues">
+      <h1 class="title">Queues</h1>
+      <div class="animation">
+        <div class="box"></div>
+      </div>
+      <div class="info">
+        <div class="details">
+          <p>Max Capacity: <span class="capacity"></span></p>
+          <p>No. of elements in queue: <span class="length"></span></p>
+        </div>
+        <div class="operations button-group">
+          <button onclick="">Enqueue</button>
+          <button onclick="">Dequeue</button>
+          <button onclick="">Empty</button>
+        </div>
+      </div>
     </section>
   </div>
 </body>
