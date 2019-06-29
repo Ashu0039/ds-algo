@@ -139,8 +139,6 @@
       }
     }
 
-    const STACK_CAPACITY = 10;
-
     const Element = (title) => {
       return { title };
     }
@@ -154,7 +152,22 @@
       return document.querySelector('.stacks .box');
     }
 
-    const stack = Stack(STACK_CAPACITY)
+    function getStackLengthCountElement() {
+      return document.querySelector('.stacks .info .length');
+    }
+
+    function setStackLengthCounter(count) {
+      if (count >= 0) {
+        const counterElement = getStackLengthCountElement();
+        console.log('counter element --> ', counterElement);
+        counterElement.innerHTML = count;
+      }
+    }
+
+    function setStackCapacityCount(count) {
+      const stackCapacityCount = document.querySelector('.stacks .info .capacity');
+      stackCapacityCount.innerHTML = count;
+    }
 
     function pushElementToStack() {
       const currentLengthOfStack = stack.length;
@@ -164,9 +177,15 @@
         stack.push(newElement);
         console.log('pushed new element into stack --> ', stack.length);
         addNewElementToStack(newElement);
+        updateStackLengthCounter();
       } catch(error) {
         handleError(error);
       }
+    }
+
+    function updateStackLengthCounter() {
+      const newStackLength = stack.length;
+      setStackLengthCounter(newStackLength);
     }
 
     function addNewElementToStack(element) {
@@ -182,6 +201,7 @@
         const elementPopped = stack.pop();
         console.log('element popped --> ', elementPopped);
         removeLastElementFromStack();
+        updateStackLengthCounter();
       } catch (error) {
         handleError(error);
       }
@@ -199,6 +219,7 @@
       try {
         stack.empty();
         emptyStackElements();
+        updateStackLengthCounter();
       } catch (error) {
         handleError(error);
       }
@@ -210,9 +231,20 @@
         stackElement.removeChild(stackElement.lastChild);
       }
     }
+
+
+    function init() {
+      setStackCapacityCount(STACK_CAPACITY);
+      setStackLengthCounter(stack.length);
+    }
+
+    const STACK_CAPACITY = 10;
+
+    const stack = Stack(STACK_CAPACITY);
+
   </script>
 </head>
-<body>
+<body onload="init()">
   <div class="container">
     <section class="stacks">
       <h1 class="title">Stacks</h1>
@@ -222,8 +254,8 @@
       </div>
       <div class="info">
         <div class="details">
-          <p>Max Capacity: <span class="capacity">10</span></p>
-          <p>Length of stack: <span class="length">4</span></p>
+          <p>Max Capacity: <span class="capacity"></span></p>
+          <p>No. of elements in stack: <span class="length"></span></p>
         </div>
         <div class="operations button-group">
           <button onclick="pushElementToStack()">Push</button>
