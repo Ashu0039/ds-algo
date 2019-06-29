@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Stack and Queues</title>
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      --themeColor: white;
+      --heading: 24px;
+      --primaryColor: #8e24aa;
+      --lightPrimaryColor: #c158dc;
+      --darkPrimaryColor: #5c007a;
+      --textOnPrimary: white;
+      --secondaryColor: #29b6f6;
+      --lightSecondaryColor: #73e8ff;
+      --darkSecondaryColor: #0086c3;
+      --textOnSecondary: #f1f8e9;
+      font-family: 'Montserrat', sans-serif;
+    }
+    .container {
+      width: calc(100vw - 40px);
+      height: calc(100vh - 40px);
+      background: var(--themeColor);
+      padding: 20px;
+      display: flex;
+    }
+    section {
+      flex: 1 1;
+      border-right: 5px solid var(--secondaryColor);
+      display: grid;
+      grid-template-areas: "title title"
+                            "animation info";
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 40px auto;
+    }
+    section:last-child {
+      border: none;
+    }
+    section .title {
+      grid-area: title;
+      text-align: center;
+      margin: 0;
+      line-height: 40px;
+      color: var(--textOnPrimary);
+      background: var(--primaryColor);
+    }
+    section .animation {
+      grid-area: animation;
+      padding: 20px;
+      display: flex;
+    }
+    section .info {
+      grid-area: info;
+    }
+    .details {
+      padding: 6px;
+      color: var(--secondaryColor);
+      font-size: 20px;
+    }
+    .details span {
+      color: var(--primaryColor);
+    }
+    button {
+      background: var(--secondaryColor);
+      color: var(--textOnSecondary);
+      border: none;
+      padding: 10px;
+      outline: none;
+      border-radius: 4px;
+      font-size: 18px;
+      margin: 0 6px;
+      box-shadow: 0 6px var(--lightSecondaryColor);
+    }
+    button:active {
+      transform: translateY(3px);
+      box-shadow: 0 3px var(--darkSecondaryColor);
+    }
+
+    .box {
+      border: 1px solid;
+      border-top: none;
+      width: calc(100% - 2px);
+      height: 75%;
+      margin-top: auto;
+      display: flex;
+      flex-direction: column-reverse;
+      align-items: center;
+    }
+
+    .stack {
+      height: 30px;
+      width: calc(100% - 20px);
+      background: var(--primaryColor);
+      margin: 5px 0px;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <section class="stacks">
+      <h1 class="title">Stacks</h1>
+      <div class="animation">
+        <div class="box">
+          <div class="stack"></div>
+          <div class="stack"></div>
+          <div class="stack"></div>
+          <div class="stack"></div>
+        </div>
+      </div>
+      <div class="info">
+        <div class="details">
+          <p>Max Capacity: <span class="capacity">10</span></p>
+          <p>Length of stack: <span class="length">4</span></p>
+        </div>
+        <div class="operations button-group">
+          <button>Push</button>
+          <button>Pop</button>
+          <button>Empty</button>
+        </div>
+      </div>
+    </section>
+    <section class="queues ">
+
+    </section>
+  </div>
+</body>
+</html>
