@@ -113,6 +113,10 @@
       transform: translateY(-1000px);
     }
 
+    .element.shift-down {
+      transform: translateY(40px);
+    }
+
     .element.queue.in {
       transform: translateY(-1000px);
     }
@@ -377,6 +381,33 @@
 
     function removeFirstElementFromQueue() {
       const queueElement = getQueueBoxElement();
+      // Animate out first child
+      // Animate other childs to shift down
+      const allElements = document.querySelectorAll('.element.queue');
+
+      // for(let i=0; i < allElements.length;i++) {
+      //   const child = allElements[i];
+      //   if (i === 0) {
+      //     // first child
+      //     child.classList = 'element queue out';
+      //   } else {
+      //     child.classList = 'element queue shift-down';
+      //   }
+      // }
+
+      // setTimeout(function () {
+      //   // queueElement.removeChild(firstElement);
+      //   for(let i=allElements.length - 1; i >= 0; i--) {
+      //     const child = allElements[i];
+      //     if (i === 0) {
+      //       // first child
+      //       queueElement.removeChild(child);
+      //     } else {
+      //       child.classList = 'element queue';
+      //     }
+      //   }
+      // }, animationTime);
+
       const firstElement = queueElement.firstChild;
       if (firstElement) {
         firstElement.classList = "element queue out";
