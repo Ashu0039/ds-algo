@@ -387,6 +387,35 @@
       }
     }
 
+    function emptyQueue() {
+      try {
+        queue.empty();
+        emptyQueueElements();
+        updateQueueLengthCounter();
+      } catch (error) {
+        handleError(error);
+      }
+    }
+
+    function emptyQueueElements() {
+      const queueElement = getQueueBoxElement();
+      const allElements = queueElement.children;
+      // Animate out all elements
+      // Animate first
+      for(let i=0; i < allElements.length; i++) {
+        const element = allElements[i];
+        element.classList = "element queue out";
+      }
+
+      // Then
+      // Remove all elements from DOM after they have animated out
+      setTimeout(function () {
+        while (queueElement.lastChild) {
+          queueElement.removeChild(queueElement.lastChild);
+        }
+      }, animationTime)
+    }
+
     function updateQueueLengthCounter() {
       const newQueueLength = queue.length;
       setQueueLengthCounter(newQueueLength);
