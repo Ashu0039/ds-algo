@@ -73,7 +73,7 @@
       outline: none;
       border-radius: 4px;
       font-size: 18px;
-      margin: 0 6px;
+      margin: 6px;
       box-shadow: 0 6px var(--lightSecondaryColor);
     }
     button:active {
@@ -95,7 +95,7 @@
       border-top: none;
     }
 
-    .stack {
+    .element {
       height: 30px;
       width: calc(100% - 20px);
       background: var(--primaryColor);
@@ -109,8 +109,16 @@
       transform: translateY(0);
     }
 
-    .stack.out {
+    .element.out {
       transform: translateY(-1000px);
+    }
+
+    .element.queue.in {
+      transform: translateY(-1000px);
+    }
+
+    .element.queue.out {
+      transform: translateY(1000px);
     }
 
     .queues .box {
@@ -120,7 +128,7 @@
   </style>
   <script>
     const Stack = (capacity) => {
-      arr = [];
+      let arr = [];
       const OVERFLOW = capacity;
 
       return {
@@ -154,6 +162,40 @@
       }
     }
 
+    const Queue = (capacity) => {
+      const OVERFLOW = capacity;
+      let arr = [];
+
+      return {
+        get length() {
+          return arr.length;
+        },
+        enqueue: function (element) {
+          if (this.length < OVERFLOW) {
+            arr = [...arr, element];
+          } else {
+            throw new Error('Queue overflow');
+          }
+        },
+        dequeue: function () {
+          if (this.length > 0) {
+            const dequeuedElement = arr[0];
+            arr = [...arr.slice(1)];
+            return dequeuedElement;
+          } else {
+            throw new Error('Queue is empty');
+          }
+        },
+        empty: function () {
+          if (this.length > 0) {
+            arr = [];
+          } else {
+            throw new Error('Queue is already empty');
+          }
+        }
+      }
+    }
+
     const Element = (title) => {
       return { title };
     }
@@ -162,6 +204,10 @@
       console.error('Got error --> ', error);
       alert(error);
     }
+
+    /*
+      STACK FUNCTIONS
+    */
 
     function getStackBoxElement() {
       return document.querySelector('.stacks .box');
@@ -206,12 +252,12 @@
     function addNewElementToStack(element) {
       const stackElement = getStackBoxElement();
       const newStackElement = document.createElement('div');
-      newStackElement.classList = "stack out";
+      newStackElement.classList = "element stack out";
       newStackElement.innerText = element.title;
       stackElement.appendChild(newStackElement);
 
       setTimeout(function () {
-        newStackElement.classList = "stack";
+        newStackElement.classList = "element stack";
       });
     }
 
@@ -230,7 +276,7 @@
       const stackElement = getStackBoxElement();
       const lastStackElement = stackElement.lastChild;
       if (lastStackElement) {
-        lastStackElement.classList = "stack out";
+        lastStackElement.classList = "element stack out";
         // should match with the animation duration specified in CSS
         setTimeout(function () {
           stackElement.removeChild(lastStackElement);
@@ -254,7 +300,7 @@
       // Animate out all stacks
       for(let i=0; i < allStacks.length; i++) {
         const stackElement = allStacks[i];
-        stackElement.classList = 'stack out';
+        stackElement.classList = "element stack out";
       }
 
       // Remove all stacks from DOM after they have animated out
@@ -265,14 +311,100 @@
       }, animationTime)
     }
 
+    /*
+      STACK FUNCTIONS ENDS
+    */
+
+    /*
+      QUEUE FUNCTIONS
+    */
+
+    function getQueueBoxElement() {
+      return document.querySelector('.queues .box');
+    }
+
+    function getQueueLengthCountElement() {
+      return document.querySelector('.queues .info .length');
+    }
+
+    function setQueueLengthCounter(count) {
+      if (count >= 0) {
+        const node = document.querySelector('.queues .info .length');
+        node.innerHTML = count;
+      }
+    }
+
+    function setQueueCapacityCount(count) {
+      if (!isNaN(count)) {
+        const queueCapacityCount = document.querySelector('.queues .info .capacity');
+        queueCapacityCount.innerHTML = count;
+      }
+    }
+
+    function queueElement() {
+      const currentLengthOfQueue = queue.length;
+      const newElement = Element(`${currentLengthOfQueue + 1}`);
+      try {
+        queue.enqueue(newElement);
+        addNewElementToQueue(newElement);
+        updateQueueLengthCounter();
+      } catch (error) {
+        handleError(error);
+      }
+    }
+
+    function addNewElementToQueue(element) {
+      const queueElement = getQueueBoxElement();
+      const newQueueElement = document.createElement('div');
+      newQueueElement.classList = "element queue in";
+      newQueueElement.innerText = element.title;
+      queueElement.appendChild(newQueueElement);
+
+      setTimeout(function () {
+        newQueueElement.classList = "element queue";
+      });
+    }
+
+    function dequeueElement() {
+      try {
+        queue.dequeue();
+        removeFirstElementFromQueue();
+        updateQueueLengthCounter();
+      } catch (error) {
+        handleError(error);
+      }
+    }
+
+    function removeFirstElementFromQueue() {
+      const queueElement = getQueueBoxElement();
+      const firstElement = queueElement.firstChild;
+      if (firstElement) {
+        firstElement.classList = "element queue out";
+        // should match with the animation duration specified in CSS
+        setTimeout(function () {
+          queueElement.removeChild(firstElement);
+        }, animationTime);
+      }
+    }
+
+    function updateQueueLengthCounter() {
+      const newQueueLength = queue.length;
+      setQueueLengthCounter(newQueueLength);
+    }
+
     function init() {
       setStackCapacityCount(STACK_CAPACITY);
       setStackLengthCounter(stack.length);
+      setQueueCapacityCount(QUEUE_CAPACITY);
+      setQueueLengthCounter(queue.length);
     }
 
     const STACK_CAPACITY = 10;
+    const QUEUE_CAPACITY = 10;
 
-    const stack = Stack(STACK_CAPACITY);
+    let stack = Stack(STACK_CAPACITY);
+
+    let queue = Queue(QUEUE_CAPACITY);
 
     // should match with the animation duration specified in CSS
     const animationTime = 500;
@@ -310,9 +442,9 @@
           <p>No. of elements in queue: <span class="length"></span></p>
         </div>
         <div class="operations button-group">
-          <button onclick="">Enqueue</button>
-          <button onclick="">Dequeue</button>
-          <button onclick="">Empty</button>
+          <button onclick="queueElement()">Enqueue</button>
+          <button onclick="dequeueElement()">Dequeue</button>
+          <button onclick="emptyQueue()">Empty</button>
         </div>
       </div>
     </section>
