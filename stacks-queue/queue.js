@@ -39,6 +39,8 @@ class Queue {
     this.setQueueCapacityCount(queue_capacity);
   }
 
+  animationTime = 500;
+
   enqueueElement() {
     const currentLengthOfQueue = this.queue.length;
     const newElement = Element(`${currentLengthOfQueue + 1}`);
@@ -61,6 +63,61 @@ class Queue {
     setTimeout(function() {
       newQueueElement.classList = "element queue";
     });
+  }
+
+  dequeueElement() {
+    try {
+      this.queue.dequeue();
+      this.removeFirstElementFromQueue();
+      this.updateQueueLengthCounter();
+    } catch (error) {
+      handleError(error);
+    }
+  }
+
+  removeFirstElementFromQueue() {
+    const queueElement = this.getQueueBoxElement();
+    // Animate out first child
+    // Animate other childs to shift down
+    // const allElements = document.querySelectorAll(".element.queue");
+
+    const firstElement = queueElement.firstChild;
+    if (firstElement) {
+      firstElement.classList = "element queue out";
+      // should match with the animation duration specified in CSS
+      setTimeout(function() {
+        queueElement.removeChild(firstElement);
+      }, this.animationTime);
+    }
+  }
+
+  emptyQueue() {
+    try {
+      this.queue.empty();
+      this.emptyQueueElements();
+      this.updateQueueLengthCounter();
+    } catch (error) {
+      handleError(error);
+    }
+  }
+
+  emptyQueueElements() {
+    const queueElement = this.getQueueBoxElement();
+    const allElements = queueElement.children;
+    // Animate out all elements
+    // Animate first
+    for (let i = 0; i < allElements.length; i++) {
+      const element = allElements[i];
+      element.classList = "element queue out";
+    }
+
+    // Then
+    // Remove all elements from DOM after they have animated out
+    setTimeout(function() {
+      while (queueElement.lastChild) {
+        queueElement.removeChild(queueElement.lastChild);
+      }
+    }, this.animationTime);
   }
 
   updateQueueLengthCounter() {
