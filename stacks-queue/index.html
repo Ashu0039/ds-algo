@@ -11,6 +11,7 @@
     />
     <link rel="stylesheet" href="styles.css" />
     <script src="stacks.js"></script>
+    <script src="queue.js"></script>
     <script src="main.js"></script>
   </head>
   <body onload="init()">
@@ -43,9 +44,9 @@
             <p>No. of elements in queue: <span class="length"></span></p>
           </div>
           <div class="operations button-group">
-            <button onclick="queueElement()">Enqueue</button>
-            <button onclick="dequeueElement()">Dequeue</button>
-            <button onclick="emptyQueue()">Empty</button>
+            <button class="enqueue">Enqueue</button>
+            <button class="dequeue">Dequeue</button>
+            <button class="empty">Empty</button>
           </div>
         </div>
       </section>

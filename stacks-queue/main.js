@@ -1,36 +1,36 @@
-const Queue = capacity => {
-  const OVERFLOW = capacity;
-  let arr = [];
+// const Queue = capacity => {
+//   const OVERFLOW = capacity;
+//   let arr = [];
 
-  return {
-    get length() {
-      return arr.length;
-    },
-    enqueue: function(element) {
-      if (this.length < OVERFLOW) {
-        arr = [...arr, element];
-      } else {
-        throw new Error("Queue overflow");
-      }
-    },
-    dequeue: function() {
-      if (this.length > 0) {
-        const dequeuedElement = arr[0];
-        arr = [...arr.slice(1)];
-        return dequeuedElement;
-      } else {
-        throw new Error("Queue is empty");
-      }
-    },
-    empty: function() {
-      if (this.length > 0) {
-        arr = [];
-      } else {
-        throw new Error("Queue is already empty");
-      }
-    }
-  };
-};
+//   return {
+//     get length() {
+//       return arr.length;
+//     },
+//     enqueue: function(element) {
+//       if (this.length < OVERFLOW) {
+//         arr = [...arr, element];
+//       } else {
+//         throw new Error("Queue overflow");
+//       }
+//     },
+//     dequeue: function() {
+//       if (this.length > 0) {
+//         const dequeuedElement = arr[0];
+//         arr = [...arr.slice(1)];
+//         return dequeuedElement;
+//       } else {
+//         throw new Error("Queue is empty");
+//       }
+//     },
+//     empty: function() {
+//       if (this.length > 0) {
+//         arr = [];
+//       } else {
+//         throw new Error("Queue is already empty");
+//       }
+//     }
+//   };
+// };
 
 const Element = title => {
   return { title };
@@ -162,11 +162,17 @@ function Main() {
   const popFromStackBtn = document.querySelector(".stacks button.pop");
   const emptyStackBtn = document.querySelector(".stacks button.empty");
 
+  const addElementToQueueBtn = document.querySelector(".queues button.enqueue");
+  const removeElementFromQueueBtn = document.querySelector(
+    ".queues button.dequeue"
+  );
+  const emptyQueueBtn = document.querySelector(".queues button.empty");
+
   const STACK_CAPACITY = 10;
   const QUEUE_CAPACITY = 10;
 
   let stack = new Stack(STACK_CAPACITY);
-  let queue = Queue(QUEUE_CAPACITY);
+  let queue = new Queue(QUEUE_CAPACITY);
 
   // Add Event listeners
   pushToStackBtn.addEventListener("click", function() {
@@ -179,6 +185,10 @@ function Main() {
 
   emptyStackBtn.addEventListener("click", function() {
     stack.emptyStack();
+  });
+
+  addElementToQueueBtn.addEventListener("click", function() {
+    queue.enqueueElement();
   });
 }
 
